@@ -1,0 +1,29 @@
+pipeline {
+    agent any
+    environment {
+        IMAGE_NAME = "nginx:latest"
+        CONTAINER_NAME = "devops_nginx"
+        PORT = "8080"
+    }
+    stages {
+        stage('Test') {
+            steps {
+                echo 'Ejecutando tests básicos (simulado)'
+                // Aquí podrías llamar a tests reales
+                sh 'echo "Tests OK"'
+            }
+        }
+        stage('Deploy Docker') {
+            steps {
+                echo 'Desplegando aplicación Docker'
+                sh 'bash ./scripts/deploy_docker_app.sh'
+            }
+        }
+        stage('Monitor') {
+            steps {
+                echo 'Monitoreando aplicación'
+                sh 'python3 ./scripts/monitor_app.py & sleep 20'
+            }
+        }
+    }
+}
