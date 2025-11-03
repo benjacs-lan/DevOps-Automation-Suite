@@ -1,0 +1,29 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    env:
+      IMAGE_NAME: nginx:latest
+      CONTAINER_NAME: devops_nginx
+      PORT: 8080
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Test (simulado)
+        run: echo "Tests OK"
+
+      - name: Set up Docker
+        uses: docker/setup-buildx-action@v2
+
+      - name: Deploy Docker App
+        run: bash ./scripts/deploy_docker_app.sh
+
+      - name: Monitor
+        run: python3 ./scripts/monitor_app.py &
